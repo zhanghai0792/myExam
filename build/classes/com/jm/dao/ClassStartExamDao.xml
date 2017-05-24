@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jm.dao.ClassStartExamDao">
+
+<sql id="Base_Column">
+select ClassStartExam.id as ClassStartExam_id , ClassStartExam.class_id as ClassStartExam_class_id , ClassStartExam.course_id as ClassStartExam_course_id , ClassStartExam.createTime as ClassStartExam_createTime , ClassStartExam.startTime as ClassStartExam_startTime , ClassStartExam.duration as ClassStartExam_duration , ClassStartExam.notify as ClassStartExam_notify  
+,ClassInfo.className as ClassInfo_className,Course.courseName as Course_courseName
+from ClassStartExam as ClassStartExam 
+left join ClassInfo as ClassInfo on ClassStartExam.class_id=ClassInfo.id
+left join Course as Course on Course.id=ClassStartExam.course_id
+</sql>
+
+<sql id="Detail_Column">
+select ClassStartExam.id as ClassStartExam_id , ClassStartExam.class_id as ClassStartExam_class_id , ClassStartExam.course_id as ClassStartExam_course_id , ClassStartExam.createTime as ClassStartExam_createTime , ClassStartExam.startTime as ClassStartExam_startTime , ClassStartExam.duration as ClassStartExam_duration , ClassStartExam.notify as ClassStartExam_notify  
+,ClassInfo.className as ClassInfo_className,Course.courseName as Course_courseName
+from ClassStartExam as ClassStartExam 
+left join ClassInfo as ClassInfo on ClassStartExam.class_id=ClassInfo.id
+left join Course as Course on Course.id=ClassStartExam.course_i 
+</sql>
+
+<resultMap id="BaseResultMap" type="com.jm.pojo.ClassStartExam">
+<id column="ClassStartExam_id" jdbcType="INTEGER" property="id" />
+ <result column="ClassStartExam_class_id" jdbcType="INTEGER" property="class_id" />
+ <result column="ClassStartExam_course_id" jdbcType="INTEGER" property="course_id" />
+ <result column="ClassStartExam_createTime" jdbcType="TIMESTAMP" property="createTime" />
+ <result column="ClassStartExam_startTime" jdbcType="TIMESTAMP" property="startTime" />
+ <result column="ClassStartExam_duration" jdbcType="BIGINT" property="duration" />
+ <result column="ClassStartExam_notify" jdbcType="BIGINT" property="notify" />
+  <result column="Class_className" jdbcType="VARCHAR" property="className" />
+  <result column="Course_courseName" jdbcType="VARCHAR" property="courseName" />
+</resultMap>
+
+<resultMap id="DetailResultMap" type="com.jm.pojo.ClassStartExam" extends="BaseResultMap">
+</resultMap>
+
+<delete id="deleteById" parameterType="java.lang.Integer">
+delete from ClassStartExam where id = #{id,jdbcType=INTEGER}
+</delete>
+
+<delete id="deleteByIds">
+delete from ClassStartExam
+where id in <foreach collection="list" item="i" open="(" close=")" separator=",">#{i}</foreach>
+  </delete>
+
+<delete id="deleteObjects">
+delete from ClassStartExam
+where id in <foreach collection="list" item="i" open="(" close=")" separator=",">#{i.id,jdbcType=INTEGER}</foreach>
+  </delete>
+
+<insert id="save" parameterType="com.jm.pojo.ClassStartExam" useGeneratedKeys="true" keyProperty="id">
+insert into ClassStartExam (class_id,course_id,createTime,startTime,duration,notify) 
+ values(#{class_id,jdbcType=INTEGER},#{course_id,jdbcType=INTEGER},#{createTime,jdbcType=TIMESTAMP},#{startTime,jdbcType=TIMESTAMP},#{duration,jdbcType=BIGINT},#{notify,jdbcType=BIGINT})
+</insert>
+
+<insert id="saveNoNull" parameterType="com.jm.pojo.ClassStartExam" useGeneratedKeys="true" keyProperty="id">
+insert into ClassStartExam
+<trim prefix="(" suffix=")" suffixOverrides=",">
+ <if test="class_id != null">
+class_id,
+</if>
+ <if test="course_id != null">
+course_id,
+</if>
+ <if test="createTime != null">
+createTime,
+</if>
+ <if test="startTime != null">
+startTime,
+</if>
+ <if test="duration != null">
+duration,
+</if>
+ <if test="notify != null">
+notify,
+</if>
+</trim>
+
+<trim prefix="values(" suffix=")" suffixOverrides=",">
+<if test="class_id != null">
+#{class_id,jdbcType=INTEGER},
+</if>
+<if test="course_id != null">
+#{course_id,jdbcType=INTEGER},
+</if>
+<if test="createTime != null">
+#{createTime,jdbcType=TIMESTAMP},
+</if>
+<if test="startTime != null">
+#{startTime,jdbcType=TIMESTAMP},
+</if>
+<if test="duration != null">
+#{duration,jdbcType=BIGINT},
+</if>
+<if test="notify != null">
+#{notify,jdbcType=BIGINT},
+</if>
+</trim>
+</insert>
+<update id="updateAll" parameterType="com.jm.pojo.ClassStartExam">
+update ClassStartExam 
+set  class_id = #{class_id,jdbcType=INTEGER}, course_id = #{course_id,jdbcType=INTEGER}, createTime = #{createTime,jdbcType=TIMESTAMP}, startTime = #{startTime,jdbcType=TIMESTAMP}, duration = #{duration,jdbcType=BIGINT}, notify = #{notify,jdbcType=BIGINT} where id = #{id,jdbcType=INTEGER}
+</update>
+ <update id="updateNoNull" parameterType="com.jm.pojo.ClassStartExam">
+update ClassStartExam 
+<set>
+<if test="class_id != null"> class_id = #{class_id,jdbcType=INTEGER},</if>
+<if test="course_id != null"> course_id = #{course_id,jdbcType=INTEGER},</if>
+<if test="createTime != null"> createTime = #{createTime,jdbcType=TIMESTAMP},</if>
+<if test="startTime != null"> startTime = #{startTime,jdbcType=TIMESTAMP},</if>
+<if test="duration != null"> duration = #{duration,jdbcType=BIGINT},</if>
+<if test="notify != null"> notify = #{notify,jdbcType=BIGINT},</if></set>
+ where id = #{id,jdbcType=INTEGER}
+</update>
+
+<select id="getBasicById"  resultMap="BaseResultMap" parameterType="java.lang.Integer">
+<include refid="Base_Column" />
+where ClassStartExam.id = #{id,jdbcType=INTEGER}
+</select>
+
+<select id="getDetailById"  resultMap="DetailResultMap" parameterType="java.lang.Integer">
+<include refid="Detail_Column" />
+where ClassStartExam.id = #{id,jdbcType=INTEGER}
+</select>
+
+<select id="count" parameterType="com.jm.query.ClassStartExamQueryParams" resultType="long">
+select count(ClassStartExam.id) from ClassStartExam as ClassStartExam
+<where>
+<if test="condition != null">${condition}</if>
+</where>
+</select>
+
+<select id="getBasic" parameterType="com.jm.query.ClassStartExamQueryParams" resultMap="BaseResultMap">
+<include refid="Base_Column" />
+<where>
+<if test="condition != null">${condition}</if>
+<if test="pojos != null">
+ and ClassStartExam.id in
+<foreach collection="pojos" open="(" close=")" separator="," item="pojo">
+#{pojo.id}
+</foreach>
+</if>
+<if test="currentTime!=null"> and ClassStartExam.startTime &lt;=#{currentTime,jdbcType=TIMESTAMP} </if>
+<if test="class_id !=null "> and ClassStartExam.class_id =#{class_id,jdbcType=INTEGER}</if>
+</where>
+<if test="orderBy != null"> order by ${orderBy}</if>
+<if test="recordIndex !=null"> limit #{recordIndex},#{pageSize}</if>
+</select>
+
+<select id="getDetail" parameterType="com.jm.query.ClassStartExamQueryParams" resultMap="DetailResultMap">
+<include refid="Detail_Column" />
+<where>
+<if test="condition != null">${condition}</if>
+<if test="pojos != null">
+ and ClassStartExam.id in
+<foreach collection="pojos" open="(" close=")" separator="," item="pojo">
+#{pojo.id}
+</foreach>
+</if>
+</where>
+<if test="orderBy != null"> order by ${orderBy}</if>
+<if test="recordIndex !=null"> limit #{recordIndex},#{pageSize}</if>
+</select>
+
+</mapper>

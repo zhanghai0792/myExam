@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jm.dao.ClassExamFileDao">
+
+<sql id="Base_Column">
+select ClassExamFile.id as ClassExamFile_id , ClassExamFile.createTime as ClassExamFile_createTime , ClassExamFile.course_id as ClassExamFile_course_id , ClassExamFile.classInfo_id as ClassExamFile_classInfo_id , ClassExamFile.examFile_id as ClassExamFile_examFile_id  
+,ClassInfo.className as ClassInfo_className,Course.courseName as Course_courseName,CourseExamFile.examName as CourseExamFile_examName
+from ClassExamFile as ClassExamFile 
+left join ClassInfo as ClassInfo on ClassInfo.id=ClassExamFile.classInfo_id 
+left join Course as Course on Course.id=ClassExamFile.course_id
+left join CourseExamFile as CourseExamFile on CourseExamFile.id=ClassExamFile.examFile_id
+</sql>
+
+<sql id="Detail_Column">
+select ClassExamFile.id as ClassExamFile_id , ClassExamFile.createTime as ClassExamFile_createTime , ClassExamFile.course_id as ClassExamFile_course_id , ClassExamFile.classInfo_id as ClassExamFile_classInfo_id , ClassExamFile.examFile_id as ClassExamFile_examFile_id  
+,ClassInfo.className as ClassInfo_className,Course.courseName as Course_courseName,CourseExamFile.examName as CourseExamFile_examName
+from ClassExamFile as ClassExamFile 
+left join ClassInfo as ClassInfo on ClassInfo.id=ClassExamFile.classInfo_id 
+left join Course as Course on Course.id=ClassExamFile.course_id
+left join CourseExamFile as CourseExamFile on CourseExamFile.id=ClassExamFile.examFile_id
+</sql>
+
+<resultMap id="BaseResultMap" type="com.jm.pojo.ClassExamFile">
+<id column="ClassExamFile_id" jdbcType="INTEGER" property="id" />
+ <result column="ClassExamFile_createTime" jdbcType="TIMESTAMP" property="createTime" />
+ <result column="ClassExamFile_course_id" jdbcType="INTEGER" property="course_id" />
+ <result column="ClassExamFile_classInfo_id" jdbcType="INTEGER" property="classInfo_id" />
+ <result column="ClassExamFile_examFile_id" jdbcType="INTEGER" property="examFile_id" />
+  <result column="ClassInfo_className" jdbcType="VARCHAR" property="className" />
+   <result column="Course_courseName" jdbcType="VARCHAR" property="courseName" />
+   <result column="CourseExamFile_examName" jdbcType="VARCHAR" property="examFileName" />
+</resultMap>
+
+<resultMap id="DetailResultMap" type="com.jm.pojo.ClassExamFile" extends="BaseResultMap">
+</resultMap>
+
+<delete id="deleteById" parameterType="java.lang.Integer">
+delete from ClassExamFile where id = #{id,jdbcType=INTEGER}
+</delete>
+
+<delete id="deleteByIds">
+delete from ClassExamFile
+where id in <foreach collection="list" item="i" open="(" close=")" separator=",">#{i}</foreach>
+  </delete>
+
+<delete id="deleteObjects">
+delete from ClassExamFile
+where id in <foreach collection="list" item="i" open="(" close=")" separator=",">#{i.id,jdbcType=INTEGER}</foreach>
+  </delete>
+
+<insert id="save" parameterType="com.jm.pojo.ClassExamFile" useGeneratedKeys="true" keyProperty="id">
+insert into ClassExamFile (createTime,course_id,classInfo_id,examFile_id) 
+ values(#{createTime,jdbcType=TIMESTAMP},#{course_id,jdbcType=INTEGER},#{classInfo_id,jdbcType=INTEGER},#{examFile_id,jdbcType=INTEGER})
+</insert>
+
+<insert id="saveNoNull" parameterType="com.jm.pojo.ClassExamFile" useGeneratedKeys="true" keyProperty="id">
+insert into ClassExamFile
+<trim prefix="(" suffix=")" suffixOverrides=",">
+ <if test="createTime != null">
+createTime,
+</if>
+ <if test="course_id != null">
+course_id,
+</if>
+ <if test="classInfo_id != null">
+classInfo_id,
+</if>
+ <if test="examFile_id != null">
+examFile_id,
+</if>
+</trim>
+
+<trim prefix="values(" suffix=")" suffixOverrides=",">
+<if test="createTime != null">
+#{createTime,jdbcType=TIMESTAMP},
+</if>
+<if test="course_id != null">
+#{course_id,jdbcType=INTEGER},
+</if>
+<if test="classInfo_id != null">
+#{classInfo_id,jdbcType=INTEGER},
+</if>
+<if test="examFile_id != null">
+#{examFile_id,jdbcType=INTEGER},
+</if>
+</trim>
+</insert>
+<update id="updateAll" parameterType="com.jm.pojo.ClassExamFile">
+update ClassExamFile 
+set  createTime = #{createTime,jdbcType=TIMESTAMP}, course_id = #{course_id,jdbcType=INTEGER}, classInfo_id = #{classInfo_id,jdbcType=INTEGER}, examFile_id = #{examFile_id,jdbcType=INTEGER} where id = #{id,jdbcType=INTEGER}
+</update>
+ <update id="updateNoNull" parameterType="com.jm.pojo.ClassExamFile">
+update ClassExamFile 
+<set>
+<if test="createTime != null"> createTime = #{createTime,jdbcType=TIMESTAMP},</if>
+<if test="course_id != null"> course_id = #{course_id,jdbcType=INTEGER},</if>
+<if test="classInfo_id != null"> classInfo_id = #{classInfo_id,jdbcType=INTEGER},</if>
+<if test="examFile_id != null"> examFile_id = #{examFile_id,jdbcType=INTEGER},</if></set>
+ where id = #{id,jdbcType=INTEGER}
+</update>
+
+<select id="getBasicById"  resultMap="BaseResultMap" parameterType="java.lang.Integer">
+<include refid="Base_Column" />
+where ClassExamFile.id = #{id,jdbcType=INTEGER}
+</select>
+
+<select id="getDetailById"  resultMap="DetailResultMap" parameterType="java.lang.Integer">
+<include refid="Detail_Column" />
+where ClassExamFile.id = #{id,jdbcType=INTEGER}
+</select>
+
+<select id="count" parameterType="com.jm.query.ClassExamFileQueryParams" resultType="long">
+select count(ClassExamFile.id) from ClassExamFile as ClassExamFile
+<where>
+<if test="condition != null">${condition}</if>
+</where>
+</select>
+
+<select id="getBasic" parameterType="com.jm.query.ClassExamFileQueryParams" resultMap="BaseResultMap">
+<include refid="Base_Column" />
+<where>
+<if test="condition != null">${condition}</if>
+<if test="pojos != null">
+ and ClassExamFile.id in
+<foreach collection="pojos" open="(" close=")" separator="," item="pojo">
+#{pojo.id}
+</foreach>
+</if>
+<if test="classInfo_id != null"> and ClassExamFile.classInfo_id=#{classInfo_id,jdbcType=INTEGER} </if>
+<if test="course_id!=null">and ClassExamFile.course_id=#{course_id,jdbcType=INTEGER}</if>
+</where>
+<if test="orderBy != null"> order by ${orderBy}</if>
+<if test="recordIndex !=null"> limit #{recordIndex},#{pageSize}</if>
+</select>
+
+<select id="getDetail" parameterType="com.jm.query.ClassExamFileQueryParams" resultMap="DetailResultMap">
+<include refid="Detail_Column" />
+<where>
+<if test="condition != null">${condition}</if>
+<if test="pojos != null">
+ and ClassExamFile.id in
+<foreach collection="pojos" open="(" close=")" separator="," item="pojo">
+#{pojo.id}
+</foreach>
+</if>
+</where>
+<if test="orderBy != null"> order by ${orderBy}</if>
+<if test="recordIndex !=null"> limit #{recordIndex},#{pageSize}</if>
+</select>
+
+</mapper>

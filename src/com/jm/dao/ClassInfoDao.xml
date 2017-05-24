@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jm.dao.ClassInfoDao">
+
+<sql id="Base_Column">
+select ClassInfo.id as ClassInfo_id , ClassInfo.className as ClassInfo_className , ClassInfo.createTime as ClassInfo_createTime  
+from ClassInfo as ClassInfo 
+</sql>
+
+<sql id="Detail_Column">
+select ClassInfo.id as ClassInfo_id , ClassInfo.className as ClassInfo_className , ClassInfo.createTime as ClassInfo_createTime  
+from ClassInfo as ClassInfo 
+</sql>
+
+<resultMap id="BaseResultMap" type="com.jm.pojo.ClassInfo">
+<id column="ClassInfo_id" jdbcType="INTEGER" property="id" />
+ <result column="ClassInfo_className" jdbcType="VARCHAR" property="className" />
+ <result column="ClassInfo_createTime" jdbcType="TIMESTAMP" property="createTime" />
+</resultMap>
+
+<resultMap id="DetailResultMap" type="com.jm.pojo.ClassInfo" extends="BaseResultMap">
+</resultMap>
+
+<delete id="deleteById" parameterType="java.lang.Integer">
+delete from ClassInfo where id = #{id,jdbcType=INTEGER}
+</delete>
+
+<delete id="deleteByIds">
+delete from ClassInfo
+where id in <foreach collection="list" item="i" open="(" close=")" separator=",">#{i}</foreach>
+  </delete>
+
+<delete id="deleteObjects">
+delete from ClassInfo
+where id in <foreach collection="list" item="i" open="(" close=")" separator=",">#{i.id,jdbcType=INTEGER}</foreach>
+  </delete>
+
+<insert id="save" parameterType="com.jm.pojo.ClassInfo" useGeneratedKeys="true" keyProperty="id">
+insert into ClassInfo (className,createTime) 
+ values(#{className,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP})
+</insert>
+
+<insert id="saveNoNull" parameterType="com.jm.pojo.ClassInfo" useGeneratedKeys="true" keyProperty="id">
+insert into ClassInfo
+<trim prefix="(" suffix=")" suffixOverrides=",">
+ <if test="className != null">
+className,
+</if>
+ <if test="createTime != null">
+createTime,
+</if>
+</trim>
+
+<trim prefix="values(" suffix=")" suffixOverrides=",">
+<if test="className != null">
+#{className,jdbcType=VARCHAR},
+</if>
+<if test="createTime != null">
+#{createTime,jdbcType=TIMESTAMP},
+</if>
+</trim>
+</insert>
+<update id="updateAll" parameterType="com.jm.pojo.ClassInfo">
+update ClassInfo 
+set  className = #{className,jdbcType=VARCHAR}, createTime = #{createTime,jdbcType=TIMESTAMP} where id = #{id,jdbcType=INTEGER}
+</update>
+ <update id="updateNoNull" parameterType="com.jm.pojo.ClassInfo">
+update ClassInfo 
+<set>
+<if test="className != null"> className = #{className,jdbcType=VARCHAR},</if>
+<if test="createTime != null"> createTime = #{createTime,jdbcType=TIMESTAMP},</if></set>
+ where id = #{id,jdbcType=INTEGER}
+</update>
+
+<select id="getBasicById"  resultMap="BaseResultMap" parameterType="java.lang.Integer">
+<include refid="Base_Column" />
+where ClassInfo.id = #{id,jdbcType=INTEGER}
+</select>
+
+<select id="getDetailById"  resultMap="DetailResultMap" parameterType="java.lang.Integer">
+<include refid="Detail_Column" />
+where ClassInfo.id = #{id,jdbcType=INTEGER}
+</select>
+
+<select id="count" parameterType="com.jm.query.ClassInfoQueryParams" resultType="long">
+select count(ClassInfo.id) from ClassInfo as ClassInfo
+<where>
+<if test="condition != null">${condition}</if>
+</where>
+</select>
+
+<select id="getBasic" parameterType="com.jm.query.ClassInfoQueryParams" resultMap="BaseResultMap">
+<include refid="Base_Column" />
+<where>
+<if test="condition != null">${condition}</if>
+<if test="pojos != null">
+ and ClassInfo.id in
+<foreach collection="pojos" open="(" close=")" separator="," item="pojo">
+#{pojo.id}
+</foreach>
+</if>
+</where>
+<if test="orderBy != null"> order by ${orderBy}</if>
+<if test="recordIndex !=null"> limit #{recordIndex},#{pageSize}</if>
+</select>
+
+<select id="getDetail" parameterType="com.jm.query.ClassInfoQueryParams" resultMap="DetailResultMap">
+<include refid="Detail_Column" />
+<where>
+<if test="condition != null">${condition}</if>
+<if test="pojos != null">
+ and ClassInfo.id in
+<foreach collection="pojos" open="(" close=")" separator="," item="pojo">
+#{pojo.id}
+</foreach>
+</if>
+</where>
+<if test="orderBy != null"> order by ${orderBy}</if>
+<if test="recordIndex !=null"> limit #{recordIndex},#{pageSize}</if>
+</select>
+
+</mapper>

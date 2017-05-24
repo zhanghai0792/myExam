@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jm.dao.StudentExamRecordDao">
+
+<sql id="Base_Column">
+select StudentExamRecord.id as StudentExamRecord_id , StudentExamRecord.stu_id as StudentExamRecord_stu_id , StudentExamRecord.course_id as StudentExamRecord_course_id , StudentExamRecord.courseExamFile_id as StudentExamRecord_courseExamFile_id , StudentExamRecord.startTime as StudentExamRecord_startTime , StudentExamRecord.endTime as StudentExamRecord_endTime , StudentExamRecord.ip as StudentExamRecord_ip , StudentExamRecord.realPath as StudentExamRecord_realPath , StudentExamRecord.createTime as StudentExamRecord_createTime  
+,User.name as User_name,
+Course.courseName as Course_courseName,
+CourseExamFile.examName as courseExamFile_courseExamFileName
+from StudentExamRecord as StudentExamRecord 
+left join Course Course on Course.id =StudentExamRecord.course_id
+left join User as User on User.id=StudentExamRecord.stu_id
+left join CourseExamFile as CourseExamFile on CourseExamFile.id=StudentExamRecord.courseExamFile_id
+</sql>
+
+<sql id="Detail_Column">
+select StudentExamRecord.id as StudentExamRecord_id , StudentExamRecord.stu_id as StudentExamRecord_stu_id , StudentExamRecord.course_id as StudentExamRecord_course_id , StudentExamRecord.courseExamFile_id as StudentExamRecord_courseExamFile_id , StudentExamRecord.startTime as StudentExamRecord_startTime , StudentExamRecord.endTime as StudentExamRecord_endTime , StudentExamRecord.ip as StudentExamRecord_ip , StudentExamRecord.realPath as StudentExamRecord_realPath , StudentExamRecord.createTime as StudentExamRecord_createTime  
+,User.name as User_name,
+Course.courseName as Course_courseName,
+CourseExamFile.examName as courseExamFile_courseExamFileName
+from StudentExamRecord as StudentExamRecord 
+left join Course Course on Course.id =StudentExamRecord.course_id
+left join User as User on User.id=StudentExamRecord.stu_id
+left join CourseExamFile as CourseExamFile on CourseExamFile.id=StudentExamRecord.courseExamFile_id
+</sql>
+
+<resultMap id="BaseResultMap" type="com.jm.pojo.StudentExamRecord">
+<id column="StudentExamRecord_id" jdbcType="INTEGER" property="id" />
+ <result column="StudentExamRecord_stu_id" jdbcType="INTEGER" property="stu_id" />
+ <result column="StudentExamRecord_course_id" jdbcType="INTEGER" property="course_id" />
+ <result column="StudentExamRecord_courseExamFile_id" jdbcType="INTEGER" property="courseExamFile_id" />
+ <result column="StudentExamRecord_startTime" jdbcType="TIMESTAMP" property="startTime" />
+ <result column="StudentExamRecord_endTime" jdbcType="TIMESTAMP" property="endTime" />
+ <result column="StudentExamRecord_ip" jdbcType="VARCHAR" property="ip" />
+ <result column="StudentExamRecord_realPath" jdbcType="VARCHAR" property="realPath" />
+ <result column="StudentExamRecord_createTime" jdbcType="TIMESTAMP" property="createTime" />
+  <result column="User_name" jdbcType="VARCHAR" property="stuName" />
+   <result column="Course_courseName" jdbcType="VARCHAR" property="courseName" />
+     <result column="courseExamFile_courseExamFileName" jdbcType="VARCHAR" property="courseExamFileName" />
+</resultMap>
+
+<resultMap id="DetailResultMap" type="com.jm.pojo.StudentExamRecord" extends="BaseResultMap">
+</resultMap>
+
+<delete id="deleteById" parameterType="java.lang.Integer">
+delete from StudentExamRecord where id = #{id,jdbcType=INTEGER}
+</delete>
+
+<delete id="deleteByIds">
+delete from StudentExamRecord
+where id in <foreach collection="list" item="i" open="(" close=")" separator=",">#{i}</foreach>
+  </delete>
+
+<delete id="deleteObjects">
+delete from StudentExamRecord
+where id in <foreach collection="list" item="i" open="(" close=")" separator=",">#{i.id,jdbcType=INTEGER}</foreach>
+  </delete>
+
+<insert id="save" parameterType="com.jm.pojo.StudentExamRecord" useGeneratedKeys="true" keyProperty="id">
+insert into StudentExamRecord (stu_id,course_id,courseExamFile_id,startTime,endTime,ip,realPath,createTime) 
+ values(#{stu_id,jdbcType=INTEGER},#{course_id,jdbcType=INTEGER},#{courseExamFile_id,jdbcType=INTEGER},#{startTime,jdbcType=TIMESTAMP},#{endTime,jdbcType=TIMESTAMP},#{ip,jdbcType=VARCHAR},#{realPath,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP})
+</insert>
+
+<insert id="saveNoNull" parameterType="com.jm.pojo.StudentExamRecord" useGeneratedKeys="true" keyProperty="id">
+insert into StudentExamRecord
+<trim prefix="(" suffix=")" suffixOverrides=",">
+ <if test="stu_id != null">
+stu_id,
+</if>
+ <if test="course_id != null">
+course_id,
+</if>
+ <if test="courseExamFile_id != null">
+courseExamFile_id,
+</if>
+ <if test="startTime != null">
+startTime,
+</if>
+ <if test="endTime != null">
+endTime,
+</if>
+ <if test="ip != null">
+ip,
+</if>
+ <if test="realPath != null">
+realPath,
+</if>
+ <if test="createTime != null">
+createTime,
+</if>
+</trim>
+
+<trim prefix="values(" suffix=")" suffixOverrides=",">
+<if test="stu_id != null">
+#{stu_id,jdbcType=INTEGER},
+</if>
+<if test="course_id != null">
+#{course_id,jdbcType=INTEGER},
+</if>
+<if test="courseExamFile_id != null">
+#{courseExamFile_id,jdbcType=INTEGER},
+</if>
+<if test="startTime != null">
+#{startTime,jdbcType=TIMESTAMP},
+</if>
+<if test="endTime != null">
+#{endTime,jdbcType=TIMESTAMP},
+</if>
+<if test="ip != null">
+#{ip,jdbcType=VARCHAR},
+</if>
+<if test="realPath != null">
+#{realPath,jdbcType=VARCHAR},
+</if>
+<if test="createTime != null">
+#{createTime,jdbcType=TIMESTAMP},
+</if>
+</trim>
+</insert>
+<update id="updateAll" parameterType="com.jm.pojo.StudentExamRecord">
+update StudentExamRecord 
+set  stu_id = #{stu_id,jdbcType=INTEGER}, course_id = #{course_id,jdbcType=INTEGER}, courseExamFile_id = #{courseExamFile_id,jdbcType=INTEGER}, startTime = #{startTime,jdbcType=TIMESTAMP}, endTime = #{endTime,jdbcType=TIMESTAMP}, ip = #{ip,jdbcType=VARCHAR}, realPath = #{realPath,jdbcType=VARCHAR}, createTime = #{createTime,jdbcType=TIMESTAMP} where id = #{id,jdbcType=INTEGER}
+</update>
+ <update id="updateNoNull" parameterType="com.jm.pojo.StudentExamRecord">
+update StudentExamRecord 
+<set>
+<if test="stu_id != null"> stu_id = #{stu_id,jdbcType=INTEGER},</if>
+<if test="course_id != null"> course_id = #{course_id,jdbcType=INTEGER},</if>
+<if test="courseExamFile_id != null"> courseExamFile_id = #{courseExamFile_id,jdbcType=INTEGER},</if>
+<if test="startTime != null"> startTime = #{startTime,jdbcType=TIMESTAMP},</if>
+<if test="endTime != null"> endTime = #{endTime,jdbcType=TIMESTAMP},</if>
+<if test="ip != null"> ip = #{ip,jdbcType=VARCHAR},</if>
+<if test="realPath != null"> realPath = #{realPath,jdbcType=VARCHAR},</if>
+<if test="createTime != null"> createTime = #{createTime,jdbcType=TIMESTAMP},</if></set>
+ where id = #{id,jdbcType=INTEGER}
+</update>
+
+<select id="getBasicById"  resultMap="BaseResultMap" parameterType="java.lang.Integer">
+<include refid="Base_Column" />
+where StudentExamRecord.id = #{id,jdbcType=INTEGER}
+</select>
+
+<select id="getDetailById"  resultMap="DetailResultMap" parameterType="java.lang.Integer">
+<include refid="Detail_Column" />
+where StudentExamRecord.id = #{id,jdbcType=INTEGER}
+</select>
+
+<select id="count" parameterType="com.jm.query.StudentExamRecordQueryParams" resultType="long">
+select count(StudentExamRecord.id) from StudentExamRecord as StudentExamRecord
+<where>
+<if test="condition != null">${condition}</if>
+</where>
+</select>
+
+<select id="getBasic" parameterType="com.jm.query.StudentExamRecordQueryParams" resultMap="BaseResultMap">
+<include refid="Base_Column" />
+<where>
+<if test="condition != null">${condition}</if>
+<if test="pojos != null">
+ and StudentExamRecord.id in
+<foreach collection="pojos" open="(" close=")" separator="," item="pojo">
+#{pojo.id}
+</foreach>
+</if>
+<if test="stu_id != null">
+ and StudentExamRecord.stu_id=#{stu_id,jdbcType=INTEGER} 
+</if>
+<if test="course_id != null">
+ and StudentExamRecord.course_id=#{course_id,jdbcType=INTEGER} 
+</if>
+</where>
+<if test="orderBy != null"> order by ${orderBy}</if>
+<if test="recordIndex !=null"> limit #{recordIndex},#{pageSize}</if>
+</select>
+
+<select id="getDetail" parameterType="com.jm.query.StudentExamRecordQueryParams" resultMap="DetailResultMap">
+<include refid="Detail_Column" />
+<where>
+<if test="condition != null">${condition}</if>
+<if test="pojos != null">
+ and StudentExamRecord.id in
+<foreach collection="pojos" open="(" close=")" separator="," item="pojo">
+#{pojo.id}
+</foreach>
+</if>
+</where>
+<if test="orderBy != null"> order by ${orderBy}</if>
+<if test="recordIndex !=null"> limit #{recordIndex},#{pageSize}</if>
+</select>
+
+</mapper>
