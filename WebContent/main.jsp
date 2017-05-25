@@ -10,6 +10,7 @@
  appConfig={userName:'${sessionScope.user.name}'}
 </script>
 <link rel="stylesheet" charset="utf-8" type="text/css" href="<%=basePath %>/css/css/ext-all.css" />
+<link rel="stylesheet" type="text/css" href="<%=basePath %>/css/notification.css" />
  <script type="text/javascript" src="<%=basePath %>/extjs/bootstrap.js"></script>
  <script type="text/javascript" src="<%=basePath %>/extjs/ext-lang-zh_CN.js"></script>
  <script type="text/javascript" src="<%=basePath %>/myApp/app.js"></script>

@@ -5,9 +5,9 @@ title:'学生考试界面',
 closable:true,
 layout: 'card',
 items:[
-
+    {xtype:'panel',html:'<center><span style="font-size:90px">当前尚未开考</span></center>'},
 {xtype:"form",
-bodyPadding: 5,
+     bodyPadding: 5,
     items: [
                 {
                     xtype: 'displayfield',
@@ -62,7 +62,6 @@ bodyPadding: 5,
             ],
          buttons:[{text:'提交答案'}],
          buttonAlign:'center'
-    },
-    {xtype:'panel',html:'<center><span style="font-size:90px">当前尚未开考</span></center>'}
+    }
 ]
 })
