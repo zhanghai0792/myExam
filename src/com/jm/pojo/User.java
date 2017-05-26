@@ -6,6 +6,8 @@ import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 public class User extends BasicModel {
+public static final byte Type_Teacher=1;
+public static final byte Type_Student=0;
 private String loginName;//登录名称，学生的长学号
 private String no;//短学号或者职工号
 private Byte type;//用户类型，0学生，1教师

@@ -4,18 +4,22 @@
 
 <sql id="Base_Column">
 select ClassStartExam.id as ClassStartExam_id , ClassStartExam.class_id as ClassStartExam_class_id , ClassStartExam.course_id as ClassStartExam_course_id , ClassStartExam.createTime as ClassStartExam_createTime , ClassStartExam.startTime as ClassStartExam_startTime , ClassStartExam.duration as ClassStartExam_duration , ClassStartExam.notify as ClassStartExam_notify  
-,ClassInfo.className as ClassInfo_className,Course.courseName as Course_courseName
+,ClassInfo.className as ClassInfo_className,Course.courseName as Course_courseName,
+user.name as User_name,user.id as User_id
 from ClassStartExam as ClassStartExam 
 left join ClassInfo as ClassInfo on ClassStartExam.class_id=ClassInfo.id
 left join Course as Course on Course.id=ClassStartExam.course_id
+left join User user on user.id=ClassStartExam.teacher_id
 </sql>
 
 <sql id="Detail_Column">
 select ClassStartExam.id as ClassStartExam_id , ClassStartExam.class_id as ClassStartExam_class_id , ClassStartExam.course_id as ClassStartExam_course_id , ClassStartExam.createTime as ClassStartExam_createTime , ClassStartExam.startTime as ClassStartExam_startTime , ClassStartExam.duration as ClassStartExam_duration , ClassStartExam.notify as ClassStartExam_notify  
-,ClassInfo.className as ClassInfo_className,Course.courseName as Course_courseName
+,ClassInfo.className as ClassInfo_className,Course.courseName as Course_courseName,
+user.name as User_name,user.id as User_id
 from ClassStartExam as ClassStartExam 
 left join ClassInfo as ClassInfo on ClassStartExam.class_id=ClassInfo.id
-left join Course as Course on Course.id=ClassStartExam.course_i 
+left join Course as Course on Course.id=ClassStartExam.course_id
+left join User user on user.id=ClassStartExam.teacher_id
 </sql>
 
 <resultMap id="BaseResultMap" type="com.jm.pojo.ClassStartExam">
@@ -28,6 +32,8 @@ left join Course as Course on Course.id=ClassStartExam.course_i
  <result column="ClassStartExam_notify" jdbcType="BIGINT" property="notify" />
   <result column="Class_className" jdbcType="VARCHAR" property="className" />
   <result column="Course_courseName" jdbcType="VARCHAR" property="courseName" />
+   <result column="User_id" jdbcType="INTEGER" property="teacher_id" />
+   <result column="User_name" jdbcType="VARCHAR" property="teacherName" />
 </resultMap>
 
 <resultMap id="DetailResultMap" type="com.jm.pojo.ClassStartExam" extends="BaseResultMap">
@@ -48,8 +54,8 @@ where id in <foreach collection="list" item="i" open="(" close=")" separator=","
   </delete>
 
 <insert id="save" parameterType="com.jm.pojo.ClassStartExam" useGeneratedKeys="true" keyProperty="id">
-insert into ClassStartExam (class_id,course_id,createTime,startTime,duration,notify) 
- values(#{class_id,jdbcType=INTEGER},#{course_id,jdbcType=INTEGER},#{createTime,jdbcType=TIMESTAMP},#{startTime,jdbcType=TIMESTAMP},#{duration,jdbcType=BIGINT},#{notify,jdbcType=BIGINT})
+insert into ClassStartExam (class_id,course_id,createTime,startTime,duration,notify,teacher_id) 
+ values(#{class_id,jdbcType=INTEGER},#{course_id,jdbcType=INTEGER},#{createTime,jdbcType=TIMESTAMP},#{startTime,jdbcType=TIMESTAMP},#{duration,jdbcType=BIGINT},#{notify,jdbcType=BIGINT},#{teacher_id,jdbcType=INTEGER})
 </insert>
 
 <insert id="saveNoNull" parameterType="com.jm.pojo.ClassStartExam" useGeneratedKeys="true" keyProperty="id">
@@ -73,6 +79,9 @@ duration,
  <if test="notify != null">
 notify,
 </if>
+<if test="teacher_id != null">
+teacher_id
+</if>
 </trim>
 
 <trim prefix="values(" suffix=")" suffixOverrides=",">
@@ -94,11 +103,14 @@ notify,
 <if test="notify != null">
 #{notify,jdbcType=BIGINT},
 </if>
+<if test="teacher_id != null">
+#{teacher_id,jdbcType=INTEGER},
+</if>
 </trim>
 </insert>
 <update id="updateAll" parameterType="com.jm.pojo.ClassStartExam">
 update ClassStartExam 
-set  class_id = #{class_id,jdbcType=INTEGER}, course_id = #{course_id,jdbcType=INTEGER}, createTime = #{createTime,jdbcType=TIMESTAMP}, startTime = #{startTime,jdbcType=TIMESTAMP}, duration = #{duration,jdbcType=BIGINT}, notify = #{notify,jdbcType=BIGINT} where id = #{id,jdbcType=INTEGER}
+set  class_id = #{class_id,jdbcType=INTEGER}, course_id = #{course_id,jdbcType=INTEGER}, createTime = #{createTime,jdbcType=TIMESTAMP}, startTime = #{startTime,jdbcType=TIMESTAMP}, duration = #{duration,jdbcType=BIGINT}, notify = #{notify,jdbcType=BIGINT},teacher_id=#{teacher_id,jdbcType=INTEGER} where id = #{id,jdbcType=INTEGER}
 </update>
  <update id="updateNoNull" parameterType="com.jm.pojo.ClassStartExam">
 update ClassStartExam 
@@ -108,7 +120,8 @@ update ClassStartExam
 <if test="createTime != null"> createTime = #{createTime,jdbcType=TIMESTAMP},</if>
 <if test="startTime != null"> startTime = #{startTime,jdbcType=TIMESTAMP},</if>
 <if test="duration != null"> duration = #{duration,jdbcType=BIGINT},</if>
-<if test="notify != null"> notify = #{notify,jdbcType=BIGINT},</if></set>
+<if test="notify != null"> notify = #{notify,jdbcType=BIGINT},</if>
+<if test="teacher_id != null">teacher_id=#{teacher_id,jdbcType=INTEGER}</if></set>
  where id = #{id,jdbcType=INTEGER}
 </update>
 
@@ -139,8 +152,7 @@ select count(ClassStartExam.id) from ClassStartExam as ClassStartExam
 #{pojo.id}
 </foreach>
 </if>
-<if test="currentTime!=null"> and ClassStartExam.startTime &lt;=#{currentTime,jdbcType=TIMESTAMP} </if>
-<if test="class_id !=null "> and ClassStartExam.class_id =#{class_id,jdbcType=INTEGER}</if>
+<if test="class_id !=null "> and ClassStartExam.class_id =#{class_id,jdbcType=INTEGER} and ClassStartExam.startTime is null</if>
 </where>
 <if test="orderBy != null"> order by ${orderBy}</if>
 <if test="recordIndex !=null"> limit #{recordIndex},#{pageSize}</if>

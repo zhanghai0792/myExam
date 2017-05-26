@@ -1,11 +1,18 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:mvc="http://www.springframework.org/schema/mvc"
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
 	xmlns:context="http://www.springframework.org/schema/context"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
-http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+	http://www.springframework.org/schema/websocket
+    http://www.springframework.org/schema/websocket/spring-websocket-4.2.xsd
+	http://www.springframework.org/schema/mvc 
+	http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd
+	http://www.springframework.org/schema/context 
+	http://www.springframework.org/schema/context/spring-context-4.2.xsd">
 <context:component-scan base-package="com.jm.controller,com.jm.controllerExceptionDeal"></context:component-scan>
  
   <!-- 采用注解的默认配置 -->
@@ -63,5 +70,36 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
      <property name="maxInMemorySize" value="4096" />
      <property name="defaultEncoding" value="UTF-8"></property>
 </bean>
+ 
+ 
+  	<!--WebSocket实例-->
+ 	<bean id="WebSocketHandler" class="com.jm.websocket.WebSocketHandler"/>
+
+	
+	<websocket:handlers >
+	    <websocket:mapping path="/webSocketServer" handler="WebSocketHandler"/>
+	     <websocket:handshake-interceptors>
+	        <bean class="com.jm.websocket.interceptor.WebSocketHandshakaInterceptor"/>
+	    </websocket:handshake-interceptors>
+	</websocket:handlers >
+	
+ 	<websocket:handlers >
+		<websocket:mapping path="/webSocketServer" handler="WebSocketHandler" />
+		<websocket:handshake-interceptors>
+			<!-- <bean class="cn.com.softvan.websocket.HandshakeInterceptor" /> -->
+			 <bean class="com.jm.websocket.interceptor.WebSocketHandshakaInterceptor"/>
+		</websocket:handshake-interceptors>
+		<websocket:sockjs />
+	</websocket:handlers>
+ 	
+	<bean class="org.springframework.web.socket.server.standard.ServletServerContainerFactoryBean">
+	    <property name="maxTextMessageBufferSize" value="8192"/>
+	    <property name="maxBinaryMessageBufferSize" value="8192"/>
+	    <property name="maxSessionIdleTimeout" value="900000"/>
+	    <property name="asyncSendTimeout" value="5000"/>
+	</bean> 
+ 
+ 
+ 
  
 </beans>

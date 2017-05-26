@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.SocketUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -37,6 +38,8 @@ import com.jm.serviceDao.StudentExamRecordServiceDao;
 import com.jm.util.AppConfig;
 import com.jm.util.FileUtil;
 import com.jm.util.ListUtil;
+import com.jm.websocket.websocketMessage;
+import com.jm.websocket.util.SocketSessionUtil;
 @Controller
 @RequestMapping("/studentExamRecord")
 public class StudentExamRecordController extends actionTemplate<StudentExamRecord, StudentExamRecordServiceDao, StudentExamRecordQueryParams>{
@@ -73,7 +76,13 @@ public class StudentExamRecordController extends actionTemplate<StudentExamRecor
 			   throw new Exception("考試異常！");
 		   }
 	   }
-	  
+	   websocketMessage message=new websocketMessage();
+	   message.setToId((Integer)session.getAttribute("teacher_id"));
+	   message.setMsg(serTemp);
+	   message.setType(message.Msg_type_person);
+	   message.setFromId(user.getId());
+	   SocketSessionUtil.sendMessage(message);
+	   
 	 InputStream in=new FileInputStream(cef.getRealPath());
 	  String downFileName=(String)session.getAttribute("course_name")+FileUtil.getExtFileName(cef.getRealPath());
 	  response.setHeader("content-disposition", "attachment;filename=" + URLEncoder.encode(downFileName, "UTF-8"));
@@ -88,6 +97,7 @@ public class StudentExamRecordController extends actionTemplate<StudentExamRecor
     	 if(in!=null)
     		 in.close();
      } 
+	 
 		return out;
 	}
 
@@ -109,6 +119,14 @@ public class StudentExamRecordController extends actionTemplate<StudentExamRecor
 		serTemp.setEndTime(new Date());
 		serTemp.setRealPath(saveFilePath);
 		serviceDao.updateNotNullField(serTemp);
+		
+		 websocketMessage message=new websocketMessage();
+		   message.setToId((Integer)session.getAttribute("teacher_id"));
+		   message.setMsg(serTemp);
+		   message.setType(message.Msg_type_person);
+		   message.setFromId(user.getId());
+		   SocketSessionUtil.sendMessage(message);
+		
 		//通知教師，保存改學生保存成功了
 		return new jsonResult("保存成功");
 	}
@@ -128,6 +146,7 @@ public class StudentExamRecordController extends actionTemplate<StudentExamRecor
 		session.setAttribute("course_id",classExams.get(0).getCourse_id());
 		session.setAttribute("course_name",classExams.get(0).getCourseName());
 		session.setAttribute("savePath", AppConfig.RootPath+"/"+classExams.get(0).getCourseName()+"/"+Course.stusFilePath);
+		session.setAttribute("teacher_id", classExams.get(0).getTeacher_id());
 		StudentExamRecordQueryParams serqp=new StudentExamRecordQueryParams();
 		serqp.setStu_id(user.getId());
 		serqp.setCourse_id(classExams.get(0).getCourse_id());

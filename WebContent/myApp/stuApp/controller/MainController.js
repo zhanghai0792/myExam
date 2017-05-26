@@ -1,6 +1,7 @@
 /**主控制器*/
 Ext.define("core.controller.MainController",{
 	extend : "Ext.app.Controller",
+	/*requires:["core.util.SocketMessageManage"],*/
 	init : function(){
 		var self = this;
 		self.addTabPanel=function(mainTabPanel,xtypeName,p_title){

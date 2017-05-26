@@ -1,7 +1,8 @@
 /**主控制器*/
 Ext.define("core.controller.StudentExamController",{
 	extend : "Ext.app.Controller",
-	requires:["core.util.Util","core.util.Alert"],
+	requires:["core.util.Util","core.util.Alert","core.util.SocketMessageManage"],
+	
 	init : function(){
 		var self = this;
 				/**下在是控制部分*/
@@ -25,7 +26,7 @@ Ext.define("core.controller.StudentExamController",{
            me.getStuFormPanel().getForm().setValus(stuExamRecord.datas[0]);
      },
      stuExamNoStart:function(stuExamRecord){
-     	console.dir(stuExamRecord);
+     	//console.dir(stuExamRecord);
        core.util.Alert.msg("提示",stuExamRecord.msg);
      },
 	views : [

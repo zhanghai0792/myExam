@@ -9,6 +9,8 @@ private java.util.Date createTime=new Date();//
 private java.util.Date startTime=new Date();//开始考试的时间
 private Long duration;//考试的时间长度，按照毫秒算
 private Long notify;//还差多长时间时提示，毫秒算
+private Integer teacher_id;
+private String teacherName;
 public Integer getClass_id() {
 return class_id;
 }
@@ -67,6 +69,23 @@ public void setClassName(String className) {
 public void setCourseName(String courseName) {
 	this.courseName = courseName;
 }
+
+public Integer getTeacher_id() {
+	return teacher_id;
+}
+
+public String getTeacherName() {
+	return teacherName;
+}
+
+public void setTeacher_id(Integer teacher_id) {
+	this.teacher_id = teacher_id;
+}
+
+public void setTeacherName(String teacherName) {
+	this.teacherName = teacherName;
+}
+
 
 
 

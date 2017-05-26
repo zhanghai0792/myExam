@@ -3,16 +3,9 @@ import java.util.Date;
 
 import com.jm.pojo.ClassStartExam;
 public class ClassStartExamQueryParams extends QueryParams<ClassStartExam> {
- private Date currentTime=new Date();
+
 
  private Integer class_id;
-public Date getCurrentTime() {
-	return currentTime;
-}
-
-public void setCurrentTime(Date currentTime) {
-	this.currentTime = currentTime;
-}
 
 
 
