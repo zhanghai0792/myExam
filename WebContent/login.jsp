@@ -9,8 +9,8 @@
 </head>
 <body>
 <form action="<%=basePath %>/user/login" method="post">
-请输入用户名<input type="text" name="userName" placeholder="请输入长学号"/><br>
-请输入密码<input type="text" name="pwd" placeholder="默认密码为长学号"/><br>
+请输入用户名<input type="text" name="userName" placeholder="请输入长学号" value="123123"/><br>
+请输入密码<input type="text" name="pwd" placeholder="默认密码为长学号" value="123123"/><br>
 <input type="submit" value="登录">
 ${requestScope.errors }
 </form>

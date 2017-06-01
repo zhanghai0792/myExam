@@ -9,6 +9,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>简易考试操作界面</title>
 <script type="text/javascript">
+var contextPath="<%= basePath %>";
 var appConfig={userName:'${sessionScope.user.name}'}
 var WebServer=location.hostname+":"+location.port;
 var pointUrl="webSocketServer";
@@ -16,6 +17,7 @@ var pointUrl="webSocketServer";
  var MozWebSocketUrl=pointUrl;
  var WinsocketUrl="ws://"+WebServer+webPath;
  var SockJSUrl="http://"+WebServer+"<%=basePath%>/sockjs/"+pointUrl;
+ var userType=${sessionScope.user.type};
  
 </script>
 <link rel="stylesheet" charset="utf-8" type="text/css" href="<%=basePath %>/css/css/ext-all.css" />

@@ -152,7 +152,7 @@ select count(ClassStartExam.id) from ClassStartExam as ClassStartExam
 #{pojo.id}
 </foreach>
 </if>
-<if test="class_id !=null "> and ClassStartExam.class_id =#{class_id,jdbcType=INTEGER} and ClassStartExam.startTime is null</if>
+<if test="class_id !=null "> and ClassStartExam.class_id =#{class_id,jdbcType=INTEGER} and ClassStartExam.startTime is  not null </if>
 </where>
 <if test="orderBy != null"> order by ${orderBy}</if>
 <if test="recordIndex !=null"> limit #{recordIndex},#{pageSize}</if>

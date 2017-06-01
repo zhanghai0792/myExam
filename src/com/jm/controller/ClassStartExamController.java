@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.jm.json.jsonResult;
 import com.jm.pojo.ClassExamFile;
@@ -17,7 +19,8 @@ import com.jm.serviceDao.ClassExamFileServiceDao;
 import com.jm.serviceDao.ClassStartExamServiceDao;
 import com.jm.serviceDao.UserServiceDao;
 import com.jm.serviceDao.StudentExamRecordServiceDao;
-
+@Controller
+@RequestMapping("/classStartExam")
 public class ClassStartExamController extends actionTemplate<ClassStartExam, ClassStartExamServiceDao, ClassStartExamQueryParams>{
 
 	@Autowired

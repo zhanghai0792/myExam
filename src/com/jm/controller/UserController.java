@@ -63,7 +63,7 @@ public class UserController extends actionTemplate<User,UserServiceDao,UserQuery
 		 user.setIp(IpUtil.getIpAddr(request));//获得用户的ip地址
 		 HttpSession session=request.getSession();
 		 session.setAttribute("user",user);
-		 
+		 System.out.println(user.getName()+"  "+user.getIp());
 		 
 		 return "redirect:../main.jsp";
 		 }catch(Exception e){
@@ -135,7 +135,7 @@ public class UserController extends actionTemplate<User,UserServiceDao,UserQuery
 			      childs.add(childTemp); 
 			      childTemp=new Menu("班级考试管理","core.controller.ClassExamController", "core.view.ClassExamManageView");
 			      childs.add(childTemp);
-			      childTemp=new Menu("考试信息监控","core.controller.StuExamRecordController", "core.view.StuExamRecordView");
+			      childTemp=new Menu("考试信息监控","core.controller.StudentExamRecordTeacherController", "stuexamrecordviewtseachergrid");
 			      childs.add(childTemp); 
 		   }
 		  
