@@ -1,0 +1,43 @@
+理论考试部分：
+  1、hibernate的配置文件有哪些，分别有什么作用
+  
+
+ 2、Session的功能和特性？
+  
+
+3、乐观锁的原理是什么？
+
+
+4、hibernate的oid的作用
+
+5、已知类(get/set方法省略)：
+public class animal 
+{  
+    /*父类所拥有的属性*/  
+    private int id;  
+    private String name; }
+子类public class horse extends animal{
+        private int teeth;//牙齿个数
+ }
+请实现这种继承配置
+  
+
+
+
+6、IOC思想最大的优势是什么？
+
+7、如果要对包名为"serviceDao"下所有类中以save开头的方法做一个前置增强(含所有子包），改如何配置？
+<aop:before pointcut="        " method="……"/>
+
+
+8、在Springmvc中 public String test1(@ModelAttribute("teacher1") teacher teach)，此处@ModelAttribute("teacher1")的作用是什么？
+
+
+
+
+
+
+
+
+
+  

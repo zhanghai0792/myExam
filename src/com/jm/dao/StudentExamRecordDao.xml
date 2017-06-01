@@ -163,11 +163,14 @@ select count(StudentExamRecord.id) from StudentExamRecord as StudentExamRecord
 </foreach>
 </if>
 <if test="stu_id != null">
- and StudentExamRecord.stu_id=#{stu_id,jdbcType=INTEGER} 
+ and StudentExamRecord.stu_id=#{stu_id,jdbcType=INTEGER}  
 </if>
 <if test="course_id != null">
- and StudentExamRecord.course_id=#{course_id,jdbcType=INTEGER} 
+ and StudentExamRecord.course_id=#{course_id,jdbcType=INTEGER}  
 </if>
+<!-- <if test="class_id != null">
+ and User.class_id=#{class_id,jdbcType=INTEGER}  
+</if> -->
 </where>
 <if test="orderBy != null"> order by ${orderBy}</if>
 <if test="recordIndex !=null"> limit #{recordIndex},#{pageSize}</if>

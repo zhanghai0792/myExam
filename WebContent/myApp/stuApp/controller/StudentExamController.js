@@ -8,7 +8,8 @@ Ext.define("core.controller.StudentExamController",{
 				/**下在是控制部分*/
 		this.control({
 			"studentexamview":{
-			render:self.stuExamPanelRender
+			render:self.stuExamPanelRender,
+			destroy:self.stuExamPanelDestroy
 			},
 			"studentexamview form button#down":{
 			click:self.downFile
@@ -19,14 +20,27 @@ Ext.define("core.controller.StudentExamController",{
 		});
 		//console.log("studentexamcontroller init方法调用");
 	},
+	stuExamPanelDestroy:function(abstractComponent,event){
+		var me=this;
+		 if( me.getStudentexamview().isStartSocket==false){
+		  core.util.SocketMessageManage.start();
+       
+     core.util.SocketMessageManage.un("message",me.messageDeal);}
+	},
+	messageDeal:function(obj,data){
+	  console.dir(data);
+	},
 	upload:function(btn){
 		var me=this;
+		me.getStuFormPanel().getEl().mask("上传答案中……");
 		me.getStuFormPanel().getForm().submit({
 		url: 'studentExamRecord/uploadExamFile',
     success: function(form, action) {
+    	me.getStuFormPanel().getEl().unmask();
        Ext.Msg.alert('成功', action.result.msg);
     },
     failure: function(form, action) {
+    	me.getStuFormPanel().getEl().unmask();
         switch (action.failureType) {
             case Ext.form.action.Action.CLIENT_INVALID:
                 Ext.Msg.alert('失败', 'Form fields may not be submitted with invalid values');
@@ -62,8 +76,12 @@ Ext.define("core.controller.StudentExamController",{
            
      },
      stuExamNoStart:function(stuExamRecord){
+     	var me=this;
      	//console.dir(stuExamRecord);
        core.util.Alert.msg("提示",stuExamRecord.msg);
+        core.util.SocketMessageManage.start();
+        me.getStudentexamview().isStartSocket=true;
+     core.util.SocketMessageManage.on("message",me.messageDeal);
      },
 	views : [
 		"core.view.StudentExamView"],

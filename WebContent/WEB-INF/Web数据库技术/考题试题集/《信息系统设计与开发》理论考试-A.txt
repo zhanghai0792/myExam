@@ -1,0 +1,46 @@
+理论考试部分：
+  1、hibernate的配置文件有哪些，分别有什么作用
+  
+
+ 2、SessionFactory有什么特性？
+  
+
+3、hibernate中对象有哪三种常见状态，这三种状态分别有什么特点？
+
+
+
+
+
+4、get与load的区别
+
+5、已知类(get/set方法省略)：
+public class Person 
+{  
+    /*父类所拥有的属性*/  
+    private int id;  
+    private String name; }
+子类public class Student extends Person{
+        private String cardId;//学号
+ }
+请实现这种继承配置
+  
+
+
+
+6、AOP中术语Advice和Pointcut指的是什么？
+
+7、如果要对包名为"Dao"下所有类中以save开头的方法做一个前置增强(含所有子包），改如何配置？
+<aop:before pointcut="        " method="……"/>
+
+
+8、在Springmvc中 public String test1(@ModelAttribute("user") User user)，此处@ModelAttribute("user")的作用是什么？
+
+
+
+
+
+
+
+
+
+  

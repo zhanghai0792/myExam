@@ -198,12 +198,12 @@ HttpStatus statusCode = HttpStatus.OK;
 			   SocketSessionUtil.sendMessage(message);
 			 logger.info(user.getNo()+"-"+user.getName()+" "+user.getIp()+"上传答案"); 
 		 }
-		 websocketMessage message=new websocketMessage();
+	/*	 websocketMessage message=new websocketMessage();
 		   message.setToId((Integer)session.getAttribute("teacher_id"));
 		   message.setMsg(serTemp);
 		   message.setType(message.Msg_type_person);
 		   message.setFromId(user.getId());
-		   SocketSessionUtil.sendMessage(message);
+		   SocketSessionUtil.sendMessage(message);*/
 		
 		//通知教師，保存改學生保存成功了
 		return new jsonResult("考试答案上传成功，可以结束考试");
