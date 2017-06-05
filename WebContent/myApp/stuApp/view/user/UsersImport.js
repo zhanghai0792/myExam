@@ -12,7 +12,9 @@ items:[
   fieldLabel: '请选择班级',
         name: 'className',
         xtype:"combo",
-        store: "core.store.ClassInfo",
+        itemId:'classSelect',
+       /* store: "core.store.ClassInfo",*/
+        store: "ClassInfos",
     queryMode: 'local',
     displayField: 'className',
     valueField: 'className'

@@ -2,7 +2,8 @@ Ext.define("core.view.user.UserGrid", {
 			extend : "core.view.template.AbstractGrid",
 			requires : ["core.view.template.AbstractGrid"],
 			alias : 'widget.usergrid',
-			store : "core.store.User",
+		/*	store : "core.store.User",*/
+				store : "Users",
 			columns : [{
 						text : 'id',
 						flex:1,

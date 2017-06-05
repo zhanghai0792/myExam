@@ -2,7 +2,8 @@ Ext.define("core.view.StuExamRecordViewTeacher", {
 			extend : "core.view.template.AbstractGrid",
 			requires : ["core.view.template.AbstractGrid"],
 			alias : 'widget.stuexamrecordviewtseachergrid',
-			store : "core.store.StudentExamRecord",
+			/*store : "core.store.StudentExamRecords",*/
+			store : "StudentExamRecords",
 			columns : [{
 						text : 'id',
 						width : 80,
