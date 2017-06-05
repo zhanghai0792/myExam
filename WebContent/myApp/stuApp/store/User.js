@@ -3,7 +3,7 @@ Ext.define('core.store.User', {
 
     requires: [
         'core.store.StoreTemplate',
-        'Packet.proxy.Myproxy','core.model.User'
+        'core.proxy.Myproxy','core.model.User'
     ],
 
     model: 'core.model.User',

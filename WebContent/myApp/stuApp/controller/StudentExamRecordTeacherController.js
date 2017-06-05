@@ -9,9 +9,24 @@ Ext.define("core.controller.StudentExamRecordTeacherController",{
 			"stuexamrecordviewtseachergrid":{
 			render:self.stuExamRecordGridPanelRender,
 			destroy:self.stuExamRecordGridPanelDestroy
+			},
+			"stuexamrecordviewtseachergrid combo#classInfo":{
+			  select:self.classInfoChange
 			}
 		});
 		//console.log("studentexamcontroller init方法调用");
+	},
+	classInfoChange:function(combo,records, eOpts ){
+		/*console.dir(records);
+		console.log(combo.getValue());*/
+	  var me=this;
+	   var store=Ext.getStore("core.store.StudentExamRecord");
+	  var proxy=store.getProxy()
+	   if(proxy.extraParams&&proxy.extraParams.hasOwnProperty("classId"))
+	  delete proxy.extraParams.classId;
+	   if(combo.getValue()>0){
+	     proxy.extraParams={classId:combo.getValue()};
+	     store.reload();}
 	},
 	stuExamRecordGridPanelDestroy:function(abstractcomponent, options){
 		var me=this;
@@ -28,8 +43,10 @@ messageDeal:function(obj,data){
 	console.dir(data);
    var store=Ext.getStore("core.store.StudentExamRecord");
    var index=store.find("id",data.msg.id);
+   if(index>=0){
    store.removeAt(index);
   store.insert(index, data.msg);
+  }
  
 },
 views : [

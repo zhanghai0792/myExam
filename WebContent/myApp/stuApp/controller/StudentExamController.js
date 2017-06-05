@@ -1,4 +1,3 @@
-/**主控制器*/
 Ext.define("core.controller.StudentExamController",{
 	extend : "Ext.app.Controller",
 	requires:["core.util.Util","core.util.Alert","core.util.SocketMessageManage"],

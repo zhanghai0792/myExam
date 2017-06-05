@@ -24,6 +24,7 @@ from User as User left join ClassInfo as ClassInfo on ClassInfo.id=User.class_id
  <result column="User_class_id" jdbcType="INTEGER" property="class_id" />
  <result column="User_createTime" jdbcType="TIMESTAMP" property="createTime" />
  <result column="User_name" jdbcType="VARCHAR" property="name" />
+  <result column="ClassInfo_className" jdbcType="VARCHAR" property="className" />
 </resultMap>
 
 <resultMap id="DetailResultMap" type="com.jm.pojo.User" extends="BaseResultMap">

@@ -4,7 +4,7 @@
 
 <sql id="Base_Column">
 select StudentExamRecord.id as StudentExamRecord_id , StudentExamRecord.stu_id as StudentExamRecord_stu_id , StudentExamRecord.course_id as StudentExamRecord_course_id , StudentExamRecord.courseExamFile_id as StudentExamRecord_courseExamFile_id , StudentExamRecord.startTime as StudentExamRecord_startTime , StudentExamRecord.endTime as StudentExamRecord_endTime , StudentExamRecord.ip as StudentExamRecord_ip , StudentExamRecord.realPath as StudentExamRecord_realPath , StudentExamRecord.createTime as StudentExamRecord_createTime  
-,User.name as User_name,
+,User.name as User_name,User.no as User_stuId,
 Course.courseName as Course_courseName,
 CourseExamFile.examName as courseExamFile_courseExamFileName
 from StudentExamRecord as StudentExamRecord 
@@ -37,6 +37,7 @@ left join CourseExamFile as CourseExamFile on CourseExamFile.id=StudentExamRecor
   <result column="User_name" jdbcType="VARCHAR" property="stuName" />
    <result column="Course_courseName" jdbcType="VARCHAR" property="courseName" />
      <result column="courseExamFile_courseExamFileName" jdbcType="VARCHAR" property="courseExamFileName" />
+      <result column="User_stuId" jdbcType="VARCHAR" property="stuId" />
 </resultMap>
 
 <resultMap id="DetailResultMap" type="com.jm.pojo.StudentExamRecord" extends="BaseResultMap">
@@ -168,9 +169,9 @@ select count(StudentExamRecord.id) from StudentExamRecord as StudentExamRecord
 <if test="course_id != null">
  and StudentExamRecord.course_id=#{course_id,jdbcType=INTEGER}  
 </if>
-<!-- <if test="class_id != null">
+<if test="class_id != null">
  and User.class_id=#{class_id,jdbcType=INTEGER}  
-</if> -->
+</if>
 </where>
 <if test="orderBy != null"> order by ${orderBy}</if>
 <if test="recordIndex !=null"> limit #{recordIndex},#{pageSize}</if>

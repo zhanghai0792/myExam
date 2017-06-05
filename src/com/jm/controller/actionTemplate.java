@@ -279,6 +279,11 @@ public class actionTemplate<P extends BasicModel,S extends ServiceDaoTemplate,Q 
 		return updateDeal(pojos, 1);
 	}
 
+	@RequestMapping("/updates")
+	@ResponseBody
+	public jsonResult updates(@RequestBody List<P> pojos) throws Exception {
+		return updateDeal(pojos, 1);
+	}
 	
 	// type=0把所有字段都更新，不管是否为空;type=1，更新非空的属性
 	public jsonResult updateDeal(List<P> pojos, int type) throws Exception {

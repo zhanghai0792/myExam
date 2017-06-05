@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.SocketUtils;
@@ -149,8 +150,9 @@ public class StudentExamRecordController extends actionTemplate<StudentExamRecor
 		in.read(body);
 		HttpHeaders headers = new HttpHeaders();
 		 String downFileName=(String)session.getAttribute("course_name")+FileUtil.getExtFileName(cef.getRealPath());
-		headers.add("Content-Disposition", "attachment;filename="+new String(downFileName.getBytes(),"ISO-8859-1"));
-HttpStatus statusCode = HttpStatus.OK;
+		 headers.setContentDispositionFormData("attachment", new String(downFileName.getBytes(),"ISO-8859-1"));
+		headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);//设置MIME类型
+		HttpStatus statusCode = HttpStatus.CREATED;
 		ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(body, headers, statusCode);
 		
 		return response;
@@ -174,8 +176,7 @@ HttpStatus statusCode = HttpStatus.OK;
 		StudentExamRecord serTemp1=serviceDao.getBasicById(stuExamRord_id);
 		
 		 if(StringUtil.isNotEmpty(serTemp1.getRealPath())){
-			 FileUtil.delete(serTemp1.getRealPath());
-			 
+			 FileUtil.delete(serTemp1.getRealPath());		 
 			 //logger.info(u.getNo()+"-"+u.getName()+" "+u.getIp()+"重新上传答案");
 		 }
 		String saveFilePath=(String)session.getAttribute("savePath");
@@ -206,13 +207,13 @@ HttpStatus statusCode = HttpStatus.OK;
 		   SocketSessionUtil.sendMessage(message);*/
 		
 		//通知教師，保存改學生保存成功了
-		return new jsonResult("考试答案上传成功，可以结束考试");
+		return new jsonResult("考试答案上传成功，<br>可以结束考试");
 	}
 	
 	
 	@RequestMapping("/getStudentExamInfo")
 	@ResponseBody
-	public jsonResult getExamInfo(HttpSession session)throws Exception{
+	public jsonResult getExamInfo(@RequestParam(name="classId",required=false) Integer classId,HttpSession session)throws Exception{
 		User user=(User)session.getAttribute("user");
 		byte type=user.getType();
 		if(type==0){
@@ -224,7 +225,11 @@ HttpStatus statusCode = HttpStatus.OK;
 			return new jsonResult(false, "尚未开始考试");
 		session.setAttribute("course_id",classExams.get(0).getCourse_id());
 		session.setAttribute("course_name",classExams.get(0).getCourseName());
-		session.setAttribute("savePath", AppConfig.RootPath+"/"+classExams.get(0).getCourseName()+"/"+Course.stusFilePath);
+		 String className=user.getClassName();
+		 File file=new File(AppConfig.RootPath+"/"+classExams.get(0).getCourseName()+"/"+Course.stusFilePath+"/"+className);
+		  if(!file.exists())
+			   file.mkdirs();
+		session.setAttribute("savePath", AppConfig.RootPath+"/"+classExams.get(0).getCourseName()+"/"+Course.stusFilePath+"/"+className);
 		session.setAttribute("teacher_id", classExams.get(0).getTeacher_id());
 		StudentExamRecordQueryParams serqp=new StudentExamRecordQueryParams();
 		serqp.setStu_id(user.getId());
@@ -235,6 +240,8 @@ HttpStatus statusCode = HttpStatus.OK;
 		return new jsonResult("考试开始", ses.get(0));}
 		else{
 			StudentExamRecordQueryParams serqp=new StudentExamRecordQueryParams();
+		   if(classId!=null)
+			    serqp.setClass_id(classId);
 			List<StudentExamRecord> ses=serviceDao.getBasic(serqp);
 			return new jsonResult(ses);
 		}

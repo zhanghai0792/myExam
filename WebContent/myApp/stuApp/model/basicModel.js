@@ -9,14 +9,13 @@ Ext.define("core.model.basicModel",{
  }
  ],*/
  idProperty:'id',
- constructor:function(cfg){
+ /*constructor:function(){
   var me=this;
+  console.dir(me.fields);
    if(me.fields){
-    me.fields=me.fields.concat(me.buildFields);
-   // delete cfg["fields"];
+    me.fields=me.fields.concat(me.buildFields());
    }
-   console.dir(me);
-   //Ext.apply(me,cfg);
+    console.dir(me.fields);
    me.callParent(arguments);
  },
  buildFields : function() {
@@ -28,5 +27,11 @@ Ext.define("core.model.basicModel",{
   name:'createTime',type:'date',dateFormat:"Y-m-j H:i:s"
  }
  ];
-}
+}*/
+ fields:[{
+  name:'id',type:'int'
+ },
+ {
+  name:'createTime',type:'date',dateFormat:"Y-m-j H:i:s"
+ }]
 })

@@ -127,7 +127,7 @@ public class UserController extends actionTemplate<User,UserServiceDao,UserQuery
 		      childs.add(childTemp);
 		   }else{
 			   //教師菜單
-			   Menu childTemp=new Menu("学生管理","core.controller.StudentManageController", "core.view.StudentManageView");
+			   Menu childTemp=new Menu("学生管理","core.controller.UserManageController", "usergrid");
 			      childs.add(childTemp); 
 			      childTemp=new Menu("课程管理","core.controller.CourseManageController", "core.view.CourseManageView");
 			      childs.add(childTemp); 

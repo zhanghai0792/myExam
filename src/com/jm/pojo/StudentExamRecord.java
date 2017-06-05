@@ -7,13 +7,15 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 public class StudentExamRecord extends BasicModel {
 private Integer stu_id;//
 private String stuName;
+private String stuId;
+
 private Integer course_id;//考试科目
 private String courseName;
 private Integer courseExamFile_id;//考试题目的题号
 private String courseExamFileName;
-@JsonFormat(pattern="yyyy-MM-dd kk:mm:ss")
+@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 private java.util.Date startTime;//开始考试时间
-@JsonFormat(pattern="yyyy-MM-dd kk:mm:ss")
+@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 private java.util.Date endTime;//考试结束的时间
 private String ip;//首次登陆的ip地址
 private String realPath;//上传的答案的路径
@@ -97,6 +99,14 @@ public void setCourseName(String courseName) {
 
 public void setCourseExamFileName(String courseExamFileName) {
 	this.courseExamFileName = courseExamFileName;
+}
+
+public String getStuId() {
+	return stuId;
+}
+
+public void setStuId(String stuId) {
+	this.stuId = stuId;
 }
 
 }
